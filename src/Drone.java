@@ -1,35 +1,56 @@
 public class Drone {
     private static int dronesCreated = 1;
-    private int droneNum;
+    private HeightControl heightControl;
     private AirGround airGroundState;
-    private BoardedAwait boardingState;
+    private int droneNum;
     private int timeLeftToLand;
     private int timeLeftForBoarding;
-    private HeightControl heightControl;
     private int droneHeight;
+
+    public Drone(HeightControl heightControl) {
+        this.heightControl = heightControl;
+        setAirGroundState(AirGround.ON_GROUND);
+        setDroneNum(getDronesCreated());
+        setTimeLeftToLand(0);
+        setTimeLeftForBoarding((int)(Math.random() * 15) + 1);
+        setDroneHeight(-1);
+        incrementDronesCreated();
+    }
+
+    public AirGround getAirGroundState() {
+        return airGroundState;
+    }
+
+    private void setAirGroundState(AirGround airGroundState) {
+        this.airGroundState = airGroundState;
+    }
+
+    public int getTimeLeftToLand() {
+        return timeLeftToLand;
+    }
+
+    private void setTimeLeftToLand(int timeLeftToLand) {
+        this.timeLeftToLand = timeLeftToLand;
+    }
+
+    public int getTimeLeftForBoarding() {
+        return timeLeftForBoarding;
+    }
+
+    private void setTimeLeftForBoarding(int timeLeftForBoarding) {
+        this.timeLeftForBoarding = timeLeftForBoarding;
+    }
 
     public int getDroneHeight() {
         return droneHeight;
     }
 
-    public void setDroneHeight(int droneHeight) {
+    private void setDroneHeight(int droneHeight) {
         this.droneHeight = droneHeight;
-    }
-
-    public BoardedAwait getBoardingState() {
-        return boardingState;
-    }
-
-    public void setBoardingState(BoardedAwait boardingState) {
-        this.boardingState = boardingState;
     }
 
     public HeightControl getHeightControl() {
         return heightControl;
-    }
-
-    public void setHeightControl(HeightControl heightControl) {
-        this.heightControl = heightControl;
     }
 
     public static int getDronesCreated() {
@@ -44,43 +65,8 @@ public class Drone {
         return droneNum;
     }
 
-    public void setDroneNum(int droneNum) {
+    private void setDroneNum(int droneNum) {
         this.droneNum = droneNum;
-    }
-
-    public Drone(HeightControl heightControl) {
-        setHeightControl(heightControl);
-        setAirGroundState(AirGround.ON_GROUND);
-        setBoardingState(BoardedAwait.AWAITING_BOARD);
-        setTimeLeftToLand(0);
-        setDroneHeight(-1);
-        setTimeLeftForBoarding((int)(Math.random() * 15) + 1);
-        setDroneNum(getDronesCreated());
-        incrementDronesCreated();
-    }
-
-    public AirGround getAirGroundState() {
-        return airGroundState;
-    }
-
-    public void setAirGroundState(AirGround airGroundState) {
-        this.airGroundState = airGroundState;
-    }
-
-    public int getTimeLeftToLand() {
-        return timeLeftToLand;
-    }
-
-    public void setTimeLeftToLand(int timeLeftToLand) {
-        this.timeLeftToLand = timeLeftToLand;
-    }
-
-    public int getTimeLeftForBoarding() {
-        return timeLeftForBoarding;
-    }
-
-    public void setTimeLeftForBoarding(int timeLeftForBoarding) {
-        this.timeLeftForBoarding = timeLeftForBoarding;
     }
 
     public void tick(int ticker) {
@@ -109,7 +95,6 @@ public class Drone {
 
                 // 2. update drone state
                 setAirGroundState(AirGround.ON_GROUND);
-                setBoardingState(BoardedAwait.AWAITING_BOARD);
 
                 // 3. update HeightControl vacancy
                 if (getDroneHeight() > 0) {
@@ -118,7 +103,7 @@ public class Drone {
                 }
 
                 // 4. update drone height
-                setDroneHeight(-1);
+                setDroneHeight(-1); // a value outside of the available heights range(=ground)
 
                 // 5. add a random boarding time
                 int randomBoardingTime = (int)(Math.random() * 5) + 1;
@@ -142,11 +127,8 @@ public class Drone {
                 // 1. report event
                 System.out.println(ticker + ": Drone " + this.getDroneNum() + " was boarded");
 
-                // 2. update drone status
-                setBoardingState(BoardedAwait.BOARDED);
-
                 // 2. ask for new height
-                if (!getHeightControl().getAvailableHeights().isEmpty()) { // if there are available heights
+                if (!getHeightControl().allHeightsOccupied()) { // if not all heights occupied(there's at least one height available)
                     // 1. set the newly approved height
                     int availableHeight = (int)getHeightControl().getAvailableHeights().pop();
                     setDroneHeight(availableHeight);
@@ -166,6 +148,7 @@ public class Drone {
                     System.out.println(ticker + ": Drone " + this.getDroneNum() + " take off denied");
 
                     // 2. wait for one minute(a single interval), and ask again(on next tick)
+                    // or basically do nothing.
                 }
             }
         }

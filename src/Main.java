@@ -7,7 +7,7 @@ public class Main{
 
     public static void main(String[]args){
         int numberOfDrones = 20;
-        int delayBetweenTicks = 0; // in seconds, to observe the changes(or run in debug)
+        int delayBetweenTicks = 0; // in seconds, to observe the events in the console(or run in debug)
 
         // initialize height control and drones array
         HeightControl heightControl = new HeightControl(15);
@@ -24,7 +24,6 @@ public class Main{
 
                 // uncomment to get more details on each drone
 //                System.out.println(droneArray[i].toString());
-
                 droneArray[i].tick(ticker);
             }
 
@@ -38,8 +37,8 @@ public class Main{
             // increment ticker by 1
             ticker++;
             // print out the available heights
-            System.out.println(Arrays.toString(heightControl.getAvailableHeights().toArray()));
-            System.out.println();
+            System.out.println("Available Heights: " + Arrays.toString(heightControl.getAvailableHeights().toArray()));
+            System.out.println(); // empty line to separate from previous batch update
         }
     }
 

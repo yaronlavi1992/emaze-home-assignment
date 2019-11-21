@@ -25,4 +25,8 @@ public class HeightControl {
     public Stack getOccupiedHeights() {
         return occupiedHeights;
     }
+
+    public boolean allHeightsOccupied() {
+        return getAvailableHeights().isEmpty();
+    }
 }

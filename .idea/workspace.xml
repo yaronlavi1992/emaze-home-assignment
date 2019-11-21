@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87e97c7b-3dd9-4d8e-8ee9-e29851f6ddb9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/BoardStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/BoardedAwait.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/Drone.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/Drone.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/HeightControl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/HeightControl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Emaze_Home_Assignment_Drone_Taxi_Service/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BoardedAwait.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Drone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Drone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HeightControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HeightControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
