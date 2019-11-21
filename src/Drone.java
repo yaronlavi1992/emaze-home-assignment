@@ -98,7 +98,7 @@ public class Drone {
 
     private void updateTimeToLand(int ticker) {
         if (getTimeLeftToLand() > 0) {
-            setTimeLeftToLand(getTimeLeftToLand() - 1); // reduce by 1 (60 km/h = 1 km per minute)
+            setTimeLeftToLand(getTimeLeftToLand() - 1); // reduce by 1 (60 km/h = 1 km per minute), assuming interval is constant
         } else if (getTimeLeftToLand() == 0) {
 
             if (getAirGroundState() == AirGround.IN_AIR) {
@@ -113,7 +113,8 @@ public class Drone {
 
                 // 3. update HeightControl vacancy
                 if (getDroneHeight() > 0) {
-                    getHeightControl().heightVacancy(getDroneHeight());
+                    getHeightControl().getOccupiedHeights().remove(this);
+                    getHeightControl().getAvailableHeights().push(getDroneHeight());
                 }
 
                 // 4. update drone height
@@ -145,18 +146,26 @@ public class Drone {
                 setBoardingState(BoardedAwait.BOARDED);
 
                 // 2. ask for new height
-                int requestedHeight = (int)(Math.random() * 14);
-                if (getHeightControl().isHeightAvailable(requestedHeight)) { // if new height approved
+                if (!getHeightControl().getAvailableHeights().isEmpty()) { // if there are available heights
                     // 1. set the newly approved height
-                    setDroneHeight(requestedHeight);
+                    int availableHeight = (int)getHeightControl().getAvailableHeights().pop();
+                    setDroneHeight(availableHeight);
 
-                    // 2. take off
+                    // 2. update HeightControl occupied height
+                    getHeightControl().getOccupiedHeights().push(availableHeight);
+
+                    // 3. take off
                     int randomFlightLength = (int)(Math.random() * 5) + 1;
                     setTimeLeftToLand(randomFlightLength);
                     setAirGroundState(AirGround.IN_AIR);
-                    System.out.println(ticker + ": Drone " + this.getDroneNum() + " has departed");
+                    System.out.println(ticker + ": Drone " + this.getDroneNum() + " was approved with height " + availableHeight);
                 } else {
-                    // wait for one minute, and ask again(on next tick)
+                    // no available heights
+
+                    // 1. report event
+                    System.out.println(ticker + ": Drone " + this.getDroneNum() + " take off denied");
+
+                    // 2. wait for one minute(a single interval), and ask again(on next tick)
                 }
             }
         }
@@ -169,6 +178,7 @@ public class Drone {
                 ", timeLeftToLand=" + getTimeLeftToLand() +
                 ", timeLeftForBoarding=" + getTimeLeftForBoarding() +
                 ", droneNum=" + getDroneNum() +
+                ", droneHeight=" + getDroneHeight() +
                 '}';
     }
 }

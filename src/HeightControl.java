@@ -1,30 +1,28 @@
-import java.util.stream.Stream;
+import java.util.Stack;
 
 public class HeightControl {
-    private int[] heights;
+    private Stack availableHeights;
+    private Stack occupiedHeights;
 
-    public HeightControl() {
-        setHeights();
-    }
-
-    public int[] getHeights() {
-        return heights;
-    }
-
-    public void setHeights() {
-        this.heights = new int[15];
-    }
-
-    public boolean isHeightAvailable(int height) {
-        if (getHeights()[height] == 0) {
-            getHeights()[height] = 1;
-            return true;
+    // constructor with given amount of heights
+    public HeightControl(int heights) {
+        this.availableHeights = new Stack();
+        for (int i = 0; i < heights; i++) {
+            availableHeights.push(i);
         }
-        System.out.println("height: " + height + " is not available");
-        return false;
+        this.occupiedHeights = new Stack();
     }
 
-    public void heightVacancy(int height) {
-        getHeights()[height - 1] = 0;
+    // default constructor
+    public HeightControl() {
+        this(15);
+    }
+
+    public Stack getAvailableHeights() {
+        return availableHeights;
+    }
+
+    public Stack getOccupiedHeights() {
+        return occupiedHeights;
     }
 }
